@@ -1,0 +1,5 @@
+protocol:DSDV,
+dataRate:2Mbps,
+delay:10ms,
+ipBase:10.1.1.0,
+subnetMask:255.255.255.0
