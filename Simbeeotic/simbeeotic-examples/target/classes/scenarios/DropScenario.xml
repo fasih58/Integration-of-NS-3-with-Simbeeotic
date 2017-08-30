@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!--
+
+    Copyright (c) 2012, The President and Fellows of Harvard College.
+    All Rights Reserved.
+
+     Redistribution and use in source and binary forms, with or without
+     modification, are permitted provided that the following conditions
+     are met:
+
+     1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+     3. Neither the name of the University nor the names of its contributors
+        may be used to endorse or promote products derived from this software
+        without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE
+    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+    OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+    OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+
+-->
+
+<scenario xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://harvard/robobees/simbeeotic/configuration/scenario"
+          xsi:schemaLocation="http://harvard/robobees/simbeeotic/configuration/scenario http://some/path/to/schema.xsd">
+
+    <master-seed>
+        <constant value="111982"/>
+    </master-seed>
+
+    <simulation>
+        <end-time>3.0</end-time>
+    </simulation>
+
+    <models>
+        <!--<model>-->
+        <!--<java-class>harvard.robobees.simbeeotic.model.comms.FreeSpacePropagationModel</java-class>-->
+        <!--<properties>-->
+        <!--<prop name="noise-floor-mean" value="-100"/>-->
+        <!--<prop name="noise-floor-sigma" value="10"/>-->
+        <!--<prop name="range-thresh" value="30"/>-->
+        <!--</properties>-->
+        <!--<start-position x="0" y="0" z="0"/>-->
+        <!--</model>-->
+        <model>
+            <java-class>harvard.robobees.simbeeotic.model.SimpleHive</java-class>
+            <start-position x="0" y="2" z="0"/>
+        </model>
+        <model count="1">
+            <java-class>harvard.robobees.simbeeotic.example.InertBee</java-class>
+            <properties>
+                <prop name="use-random-start" value="true"/>
+                <prop name="random-start-bound" value="5"/>
+                <prop name="allow-bee-collisions" value="false"/>
+                <!--<prop name="use-radio" value="true"/>-->
+                <!--<prop name="radio-timeout" value="1000"/>-->
+                <!--<prop name="sensor-timeout" value="1000"/>-->
+                <prop name="length" value="0.2"/>
+                <prop name="mass" value="0.12"/>
+            </properties>
+
+            <ns>
+                <java-class>harvard.robobees.simbeeotic.model.ns.NS</java-class>
+                <properties>
+                    <prop name="protocol" value="DSDV"/>
+                    <prop name="data-rate" value="2Mbps"/>
+                    <prop name="delay" value="10ms"/>
+                    <prop name="base-ip" value="10.1.1.0"/>
+                    <prop name="subnet-mask" value="255.255.255.0"/>
+                    <prop name="propagation-delay" value="ConstantSpeedPropagationDelayModel"/>
+                    <prop name="propagation-loss" value="FriisPropagationLossModel"/>
+                </properties>
+            </ns>
+            <start-position x="0" y="0" z="2"/>
+        </model>
+        <model count="1">
+            <java-class>harvard.robobees.simbeeotic.example.InertBee</java-class>
+            <properties>
+                <prop name="use-random-start" value="true"/>
+                <prop name="random-start-bound" value="5"/>
+                <prop name="allow-bee-collisions" value="false"/>
+                <!--<prop name="use-radio" value="true"/>-->
+                <!--<prop name="radio-timeout" value="1000"/>-->
+                <!--<prop name="sensor-timeout" value="1000"/>-->
+                <prop name="length" value="0.2"/>
+                <prop name="mass" value="0.12"/>
+            </properties>
+
+            <ns>
+                <java-class>harvard.robobees.simbeeotic.model.ns.NS</java-class>
+                <properties>
+                    <prop name="protocol" value="OSLR"/>
+                    <prop name="data-rate" value="5Mbps"/>
+                    <prop name="delay" value="2ms"/>
+                    <prop name="base-ip" value="10.1.1.0"/>
+                    <prop name="subnet-mask" value="255.255.255.0"/>
+                    <prop name="propagation-delay" value="ConstantSpeedPropagationDelayModel"/>
+                    <prop name="propagation-loss" value="FriisPropagationLossModel"/>
+                </properties>
+            </ns>
+            <start-position x="0" y="100" z="2"/>
+        </model>
+    </models>
+
+    <components>
+        <variation>
+            <java-class>harvard.robobees.simbeeotic.component.VisComponent3D</java-class>
+        </variation>
+    </components>
+
+</scenario>
