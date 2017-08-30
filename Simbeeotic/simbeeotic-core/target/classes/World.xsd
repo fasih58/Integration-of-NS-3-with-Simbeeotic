@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2012, The President and Fellows of Harvard College.
+    All Rights Reserved.
+
+     Redistribution and use in source and binary forms, with or without
+     modification, are permitted provided that the following conditions
+     are met:
+
+     1. Redistributions of source code must retain the above copyright
+        notice, this list of conditions and the following disclaimer.
+
+     2. Redistributions in binary form must reproduce the above copyright
+        notice, this list of conditions and the following disclaimer in the
+        documentation and/or other materials provided with the distribution.
+
+     3. Neither the name of the University nor the names of its contributors
+        may be used to endorse or promote products derived from this software
+        without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE UNIVERSITY AND CONTRIBUTORS ``AS IS'' AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+    ARE DISCLAIMED.  IN NO EVENT SHALL THE UNIVERSITY OR CONTRIBUTORS BE LIABLE
+    FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+    OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+    HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+    LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+    OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+
+-->
+
+<!-- a schema that describes the world definition document -->
+<xs:schema targetNamespace="http://harvard/robobees/simbeeotic/configuration/world"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:world="http://harvard/robobees/simbeeotic/configuration/world"
+           elementFormDefault="qualified">
+
+    <xs:element name="world" type="world:World"/>
+
+    <xs:complexType name="World">
+        <xs:sequence>
+            <xs:element name="radius" type="xs:float" default="10000" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="properties" type="world:Meta" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="obstacles" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="obstacle" type="world:Obstacle" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="flowers" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="patch" type="world:Patch" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+             <xs:element name="people" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="person" type="world:Person" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="structures" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="structure" type="world:Structure" minOccurs="1" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Obstacle">
+        <xs:sequence>
+            <xs:choice minOccurs="1" maxOccurs="1">
+                <xs:element name="box" type="world:Box"/>
+                <xs:element name="cylinder" type="world:Cylinder"/>
+                <xs:element name="sphere" type="world:Sphere"/>
+                <xs:element name="cone" type="world:Cone"/>
+            </xs:choice>
+            <xs:element name="color" type="world:Color" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="texture" type="world:Texture" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="label" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="meta" type="world:Meta" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Patch">
+        <xs:sequence>
+            <xs:element name="center" type="world:Point" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="radius" type="xs:float" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="density" type="xs:float" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="color" type="world:Color" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="meta" type="world:Meta" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+ 	<xs:complexType name="Person">
+    	<xs:sequence>
+    		<xs:element name="color" type="world:Color" minOccurs="0" maxOccurs="1"/>
+    		<xs:element name="label" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    		<xs:element name="meta" type="world:Meta" minOccurs="0" maxOccurs="1"/>
+    		<xs:choice minOccurs="1" maxOccurs="1">
+    			<xs:element name="man" type="world:Man"></xs:element>
+    		</xs:choice>
+    	</xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="Structure">
+        <xs:sequence>
+            <xs:element name="color" type="world:Color" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="texture" type="world:Texture" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="meta" type="world:Meta" minOccurs="0" maxOccurs="1"/>
+            <xs:choice minOccurs="1" maxOccurs="1">
+                <xs:element name="wall" type="world:Wall"/>
+                <xs:element name="surface" type="world:Surface"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Point">
+        <xs:attribute name="x" type="xs:float" use="required"/>
+        <xs:attribute name="y" type="xs:float" use="required"/>
+        <xs:attribute name="z" type="xs:float" default="0" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="Meta">
+        <xs:sequence>
+            <xs:element name="prop" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:attribute name="name" type="xs:string" use="required"/>
+                    <xs:attribute name="value" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Color">
+        <xs:attribute name="red" type="xs:short" default="0" use="optional"/>
+        <xs:attribute name="green" type="xs:short" default="0" use="optional"/>
+        <xs:attribute name="blue" type="xs:short" default="0" use="optional"/>
+        <xs:attribute name="alpha" type="xs:short" default="255" use="optional"/>
+    </xs:complexType>
+
+    <xs:complexType name="Texture">
+        <xs:choice>
+            <xs:element name="classpath" type="world:Path"/>
+            <xs:element name="filesystem" type="world:Path"/>
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="Path">
+        <xs:attribute name="path" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="Shape" abstract="true">
+        <xs:sequence>
+            <xs:element name="position" type="world:Point" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="Box">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="length" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="width" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="height" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="rotation" type="xs:float" default="0" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Cylinder">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="width" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="height" type="xs:float" default="1" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Sphere">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="radius" type="xs:float" default="1" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Cone">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="radius" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="height" type="xs:float" default="1" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Wall">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="height" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="length" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="width" type="xs:float" default="1" use="optional"/>
+                <!--Specifies degrees in radians which the wall should be rotated. Occurs about lower corner (smallest x/y values) in xy-plane.-->
+                <xs:attribute name="rotation" type="xs:float" default="0" use="optional"/>
+                <!--Does the wall have a door?-->
+                <xs:attribute name="door" type="xs:boolean" default="false" use="optional"/>
+                <xs:attribute name="doorwidth" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="doorheight" type="xs:float" default="1" use="optional"/>
+                <!--Offset from 'left' side of wall to 'left' side of door. NOT center of door.-->
+                <xs:attribute name="doorposition" type="xs:float" default="1" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="Surface">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="height" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="length" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="width" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="rotation" type="xs:float" default="0" use="optional"/>
+                <xs:attribute name="trap" type="xs:boolean" default="false" use="optional"/>
+                <xs:attribute name="trapX" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="trapY" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="trapLength" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="trapWidth" type="xs:float" default="1" use="optional"/>
+            </xs:extension>
+
+        </xs:complexContent>
+    </xs:complexType>
+    
+     <xs:complexType name="Man">
+        <xs:complexContent>
+            <xs:extension base="world:Shape">
+                <xs:attribute name="width" type="xs:float" default="1" use="optional"/>
+                <xs:attribute name="height" type="xs:float" default="1" use="optional"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>    
+    
+</xs:schema>
